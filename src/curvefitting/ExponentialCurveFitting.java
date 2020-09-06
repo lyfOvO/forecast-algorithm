@@ -10,7 +10,7 @@ public class ExponentialCurveFitting implements CurveFitting{
     private double[] coefficient;//拟合结果，即多项式系数
     private List<Integer> prediction=new ArrayList<>();//预测结果数组，用于输出
     private int numOfResult;//预测结果的天数
-    private WeightedObservedPoints points;
+    private WeightedObservedPoints points=new WeightedObservedPoints();
     private int beginOfPrediction=0;//预测结果的开始，即观察点的个数
 
     public ExponentialCurveFitting(){
@@ -25,17 +25,20 @@ public class ExponentialCurveFitting implements CurveFitting{
         this.numOfResult=numOfResult;
         //将x,y数列添加到观察点序列中
         for(int i=0;i<Math.min(x.size(),y.size());i++){
-            System.out.println("添加到观察点序列中:("+(double)x.get(i)+","+(double)y.get(i)
+            double tx=(double)x.get(i);
+            double ty=(double)y.get(i);
+            points.add(tx,Math.log(ty));
+            beginOfPrediction++;
+            System.out.println("添加到观察点序列中:("+tx+","+ty
                     +"),当前共有观察点"+beginOfPrediction+"个");
-            points.add((double)x.get(i),Math.log((double)y.get(i)));
         }
     }
 
     @Override
     public void run(){
-        PolynomialCurveFitter fitter=PolynomialCurveFitter.create(2);
+        PolynomialCurveFitter fitter=PolynomialCurveFitter.create(1);
         coefficient=fitter.fit(points.toList());
-        coefficient[0]=Math.pow(Math.E,coefficient[0]);
+        coefficient[0]=Math.pow(Math.E,coefficient[0]);//a
         //输出拟合得到的指数函数
         System.out.println("拟合所得指数函数为:y="+coefficient[0]+"*e^"+coefficient[1]+"x");
     }

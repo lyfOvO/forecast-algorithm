@@ -1,5 +1,7 @@
 package curvefitting;
 
+import org.apache.commons.math3.analysis.function.Exp;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,49 +17,6 @@ public class Fitting {
     List<Integer> y; //用于预测的疫情数据
 
     Fitting(){
-        List<Integer> prediction=new ArrayList<>();
-        if(!hasControl){
-            //不进行控制的自然增长模型
-        }
-        else{
-            int today=y.size();
-            System.out.println("today:"+today);
-            int start=this.getStartX(startControlDate,today);
-            if(today<start){
-                //today处于①
-                if(start-today>=num){
-                    //整个预测时期(start~start+num)都处于①
-                }
-                else{
-                    //预测时期超过①
-                    if(num-(start-today)<=last){
-                        //预测时期仅停留在①②
-                        //①today~start
-                        //②start~num-(start-today)
-                    }
-                    else{
-                        //预测时期处于①②③
-                        //①today~start
-                        //②start~start+last
-                        //③start+last~num+today
-                    }
-                }
-            }
-            else if(today<start+last){
-                //今天处于②
-                if(today+num>start+last){
-                    //预测时期处于②③阶段
-                    //②today~start+last
-                    //③start+last~today+num
-                }
-                else{
-                    //预测时期仅处于②today~today+num
-                }
-            }
-            else{
-                //今天处于③，预测时期也只会处于③today~today+num
-            }
-        }
 
     }
 
@@ -92,9 +51,67 @@ public class Fitting {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println("control start date:"+(today+distance));
+        start= (int) (today+distance);
+        System.out.println("control start date:"+start);
         return start;
     }
 
+    public List<Integer> fitting(){
+        List<Integer> prediction=new ArrayList<>();
+        if(!hasControl){
+            //不进行控制的自然增长模型
+        }
+        else{
+            int today=y.size();
+            System.out.println("today:"+today);
+            int start=this.getStartX(startControlDate,today);
+            System.out.println("start:"+start);
+            if(today<start){
+                //today处于①
+                if(start-today>=num){
+                    //整个预测时期(start~start+num)都处于①
+                    System.out.println("整个预测时期(start~start+num)都处于①");
+                    System.out.println("①:"+start+"~"+(start+num));
+                    List<Integer> x=new ArrayList<>();
+                    for(int i=1;i<=y.size();i++)
+                        x.add(i);
+                    ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num);
+                    prediction=fit.getPrediction();
+                }
+                else{
+                    //预测时期超过①
+                    if(num-(start-today)<=last){
+                        //预测时期仅停留在①②
+                        System.out.println("预测时期仅停留在①②");
+                        //①today~start
+                        System.out.println("①:"+today+"~"+start);
+
+                        //②start~num-(start-today)
+                    }
+                    else{
+                        //预测时期处于①②③
+                        //①today~start
+                        //②start~start+last
+                        //③start+last~num+today
+                    }
+                }
+            }
+            else if(today<start+last){
+                //今天处于②
+                if(today+num>start+last){
+                    //预测时期处于②③阶段
+                    //②today~start+last
+                    //③start+last~today+num
+                }
+                else{
+                    //预测时期仅处于②today~today+num
+                }
+            }
+            else{
+                //今天处于③，预测时期也只会处于③today~today+num
+            }
+        }
+        return prediction;
+    }
 
 }
