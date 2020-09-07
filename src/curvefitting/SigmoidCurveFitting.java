@@ -24,11 +24,11 @@ public class SigmoidCurveFitting implements CurveFitting{
     public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
         this.numOfResult=numOfResult;
         //将x,y数列添加到观察点序列中
-        //y=1/[1+e^(a+bx)]---->ln[(1/y)-1]=a+bx
+        //y=1/[e^(a+bx)]---->ln[(1/y)]=a+bx
         for(int i=0;i<Math.min(x.size(),y.size());i++){
-            double tx=(double)x.get(i);
-            double ty=(double)y.get(i);
-            points.add(Math.log((1/ty)-1),tx);
+            double tx=-(double)x.get(i);
+            double ty=Math.log((1/(double)y.get(i)));
+            points.add(tx,ty);
             beginOfPrediction++;
             System.out.println("添加到观察点序列中:("+tx+","+ty
                     +"),当前共有观察点"+beginOfPrediction+"个");
@@ -40,7 +40,7 @@ public class SigmoidCurveFitting implements CurveFitting{
     public void run(){
         PolynomialCurveFitter fitter=PolynomialCurveFitter.create(1);
         coefficient=fitter.fit(points.toList());
-        System.out.println("拟合所得sigmoid函数为:y=1/[1+e^("+coefficient[0]+"+"+coefficient[1]+"x)]");
+        System.out.println("拟合所得sigmoid函数为:y=1/[e^("+coefficient[0]+"-"+coefficient[1]+"x)]");
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SigmoidCurveFitting implements CurveFitting{
         double y=0;
         double a=coefficient[0];
         double b=coefficient[1];
-        y=1/(1+Math.pow(Math.E,a+(b*x)));
+        y=1/Math.pow(Math.E,a-(b*x));
         return (int)(y*10+5)/10;
     }
 

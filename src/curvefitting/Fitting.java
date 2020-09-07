@@ -117,6 +117,11 @@ public class Fitting {
             }
             else{
                 //今天处于③，预测时期也只会处于③today~today+num
+                System.out.println("③:"+today+"~"+(today+num));
+                List<Integer> x= new ArrayList<>();
+                for(int i=start+last;i<=today;i++){
+                    x.add(i);
+                }
             }
         }
         return prediction;
