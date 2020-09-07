@@ -60,6 +60,14 @@ public class Fitting {
         List<Integer> prediction=new ArrayList<>();
         if(!hasControl){
             //不进行控制的自然增长模型
+            System.out.println("without control");
+            List<Integer> x=new ArrayList<>();
+            for(int i=1;i<=y.size();i++){
+                x.add(i);
+            }
+            SigmoidCurveFitting fit=new SigmoidCurveFitting(x,y,num);
+            prediction.addAll(fit.getPrediction());
+            return prediction;
         }
         else{
             int today=y.size();
