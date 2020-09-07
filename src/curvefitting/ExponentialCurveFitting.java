@@ -48,9 +48,9 @@ public class ExponentialCurveFitting implements CurveFitting{
         this.run();
         System.out.println("此阶段预测得到的结果个数为:"+numOfResult);
         for(int i=0;i<numOfResult;i++){
+            today++;
             prediction.add(function(today+1));
             System.out.println("预测结果:("+today+","+function(today)+")");
-            today++;
         }
         return prediction;
     }

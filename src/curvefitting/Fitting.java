@@ -93,8 +93,29 @@ public class Fitting {
                         System.out.println("预测时期仅停留在①②");
                         //①today~start
                         System.out.println("①:"+today+"~"+start);
-
-                        //②start~num-(start-today)
+                        List<Integer> x1=new ArrayList<>();
+                        List<Integer> y1=new ArrayList<>();
+                        for(int i=1;i<=today;i++){
+                            x1.add(i);
+                            y1.add(y.get(i-1));
+                        }
+                        PolynomialCurveFitting fit1=new PolynomialCurveFitting(x1,y1,start-today);
+                        if(x1.size()<3){
+                            double tx=x1.get(0);
+                            double ty=y1.get(0);
+                            fit1.addPoint(tx+(double)(last/2),ty*(1+(((double)last)/10)));
+                            fit1.addPoint(tx+(double)last,ty);
+                        }
+                        prediction.addAll(fit1.getPrediction(today));
+                        //②start~num+today
+                        System.out.println("③:"+(start+1)+"~"+(today+num));
+                        double tx=start;
+                        double ty=prediction.get(prediction.size()-1);
+                        PolynomialCurveFitting fit2=new PolynomialCurveFitting(num-(start-today));
+                        fit2.addPoint(tx,ty);
+                        fit2.addPoint(tx+(double)(last/2),ty*(1+(((double)last)/10)));
+                        fit2.addPoint(tx+(double)last,ty);
+                        prediction.addAll(fit2.getPrediction(start));
                     }
                     else{
                         //预测时期处于①②③
@@ -108,7 +129,10 @@ public class Fitting {
                 //今天处于②
                 if(today+num>start+last){
                     //预测时期处于②③阶段
+                    System.out.println("预测时期处于②③阶段");
                     //②today~start+last
+                    System.out.println("②:"+today+"~"+(start+last));
+                    
                     //③start+last~today+num
                 }
                 else{
@@ -116,18 +140,18 @@ public class Fitting {
                     System.out.println("②:"+today+"~"+(today+num));
                     List<Integer> x1 =new ArrayList<>();
                     List<Integer> y1=new ArrayList<>();
-                    for(int i=start;i<=y.size();i++){
+                    for(int i=start;i<=today;i++){
                         x1.add(i);
                         y1.add(y.get(i-1));
                     }
-                    PolynomialCurveFitting fit=new PolynomialCurveFitting(x1,y1,num);
+                    PolynomialCurveFitting fit1=new PolynomialCurveFitting(x1,y1,num);
                     if(x1.size()<3){
                         double tx=x1.get(0);
                         double ty=y1.get(0);
-                        fit.addPoint(tx+(double)(last/2),ty*(1+(((double)last)/10)));
-                        fit.addPoint(tx+(double)last,ty);
+                        fit1.addPoint(tx+(double)(last/2),ty*(1+(((double)last)/10)));
+                        fit1.addPoint(tx+(double)last,ty);
                     }
-                    prediction.addAll(fit.getPrediction(today));
+                    prediction.addAll(fit1.getPrediction(today));
                 }
             }
             else{
