@@ -12,21 +12,17 @@ public class ExponentialCurveFitting implements CurveFitting{
     private int numOfResult;//预测结果的天数
     private WeightedObservedPoints points=new WeightedObservedPoints();
     private int numOfPoints =0;//预测结果的开始，即观察点的个数
-    private int today;
 
-    public ExponentialCurveFitting(int today){
-        this.today=today;
+    public ExponentialCurveFitting(){
 
     }
 
-    public ExponentialCurveFitting(int numOfResult,int today){
-        this.today=today;
+    public ExponentialCurveFitting(int numOfResult){
         this.numOfResult=numOfResult;
     }
 
-    public ExponentialCurveFitting(List<Integer> x,List<Integer> y,int numOfResult,int today){
+    public ExponentialCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
         this.numOfResult=numOfResult;
-        this.today=today;
         //将x,y数列添加到观察点序列中
         for(int i=0;i<Math.min(x.size(),y.size());i++){
             double tx=(double)x.get(i);
@@ -48,7 +44,7 @@ public class ExponentialCurveFitting implements CurveFitting{
     }
 
     @Override
-    public List<Integer> getPrediction(){
+    public List<Integer> getPrediction(int today){
         this.run();
         System.out.println("此阶段预测得到的结果个数为:"+numOfResult);
         for(int i=0;i<numOfResult;i++){

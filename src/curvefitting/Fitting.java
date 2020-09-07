@@ -69,8 +69,8 @@ public class Fitting {
             for(int i=1;i<=y.size();i++){
                 x.add(i);
             }
-            SigmoidCurveFitting fit=new SigmoidCurveFitting(x,y,num,today);
-            prediction.addAll(fit.getPrediction());
+            SigmoidCurveFitting fit=new SigmoidCurveFitting(x,y,num);
+            prediction.addAll(fit.getPrediction(today));
             return prediction;
         }
         else{
@@ -83,8 +83,8 @@ public class Fitting {
                     List<Integer> x=new ArrayList<>();
                     for(int i=1;i<=y.size();i++)
                         x.add(i);
-                    ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num,today);
-                    prediction=fit.getPrediction();
+                    ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num);
+                    prediction=fit.getPrediction(today);
                 }
                 else{
                     //预测时期超过①
@@ -113,24 +113,41 @@ public class Fitting {
                 }
                 else{
                     //预测时期仅处于②today~today+num
+                    System.out.println("②:"+today+"~"+(today+num));
+                    List<Integer> x1 =new ArrayList<>();
+                    List<Integer> y1=new ArrayList<>();
+                    for(int i=start;i<=y.size();i++){
+                        x1.add(i);
+                        y1.add(y.get(i-1));
+                    }
+                    PolynomialCurveFitting fit=new PolynomialCurveFitting(x1,y1,num);
+                    if(x1.size()<3){
+                        double tx=x1.get(0);
+                        double ty=y1.get(0);
+                        fit.addPoint(tx+(double)(last/2),ty*(1+(((double)last)/10)));
+                        fit.addPoint(tx+(double)last,ty);
+                    }
+                    prediction.addAll(fit.getPrediction(today));
                 }
             }
             else{
                 //今天处于③，预测时期也只会处于③today~today+num
-                System.out.println("③:"+today+"~"+(today+num));
-                List<Integer> x= new ArrayList<>();
+                System.out.println("③:"+(today-1)+"~"+(today+num));
+                List<Integer> x1= new ArrayList<>();
+                List<Integer> y1=new ArrayList<>();
                 for(int i=start+last;i<=today;i++){
-                    x.add(i);
+                    x1.add(i);
+                    y1.add(y.get(i-1));
                 }
-                ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num,today);
-                if(x.size()<3){
+                ExponentialCurveFitting fit=new ExponentialCurveFitting(x1,y1,num);
+                if(x1.size()<3){
                     //如果可用数据太少，则需要手动添加数据
-                    double tx=x.get(0);
-                    double ty=y.get(0);
+                    double tx=x1.get(0);
+                    double ty=y1.get(0);
                     fit.addPoint(tx+1*15*((double)last)/30,ty/2);
                     fit.addPoint(tx+2*15*((double)last)/30,ty/4);
                 }
-                prediction.addAll(fit.getPrediction());
+                prediction.addAll(fit.getPrediction(today));
             }
         }
         return prediction;

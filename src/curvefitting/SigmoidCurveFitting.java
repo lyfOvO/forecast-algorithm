@@ -12,19 +12,17 @@ public class SigmoidCurveFitting implements CurveFitting{
     private int numOfResult;//预测结果的天数
     private WeightedObservedPoints points=new WeightedObservedPoints();
     private int beginOfPrediction=0;//预测结果的开始，即观察点的个数
-    private int today;
-    public SigmoidCurveFitting(int today){
-        this.today=today;
+
+    public SigmoidCurveFitting(){
+
     }
 
-    public SigmoidCurveFitting(int numOfResult,int today){
+    public SigmoidCurveFitting(int numOfResult){
         this.numOfResult=numOfResult;
-        this.today=today;
     }
 
-    public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int numOfResult,int today){
+    public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
         this.numOfResult=numOfResult;
-        this.today=today;
         //将x,y数列添加到观察点序列中
         //y=1/[e^(a+bx)]---->ln[(1/y)]=a+bx
         for(int i=0;i<Math.min(x.size(),y.size());i++){
@@ -46,14 +44,13 @@ public class SigmoidCurveFitting implements CurveFitting{
     }
 
     @Override
-    public List<Integer> getPrediction() {
+    public List<Integer> getPrediction(int today) {
         this.run();
-        int date=beginOfPrediction;
         System.out.println("此阶段预测得到的结果个数为:"+numOfResult);
         for(int i=0;i<numOfResult;i++){
-            prediction.add(function(date));
-            System.out.println("预测结果:("+date+","+function(date)+")");
-            date++;
+            prediction.add(function(today));
+            System.out.println("预测结果:("+today+","+function(today)+")");
+            today++;
         }
         return prediction;
     }
