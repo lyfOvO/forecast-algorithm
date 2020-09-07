@@ -58,6 +58,10 @@ public class Fitting {
 
     public List<Integer> fitting(){
         List<Integer> prediction=new ArrayList<>();
+        int today=y.size();
+        System.out.println("today:"+today);
+        int start=this.getStartX(startControlDate,today);
+        System.out.println("start:"+start);
         if(!hasControl){
             //不进行控制的自然增长模型
             System.out.println("without control");
@@ -65,15 +69,11 @@ public class Fitting {
             for(int i=1;i<=y.size();i++){
                 x.add(i);
             }
-            SigmoidCurveFitting fit=new SigmoidCurveFitting(x,y,num);
+            SigmoidCurveFitting fit=new SigmoidCurveFitting(x,y,num,today);
             prediction.addAll(fit.getPrediction());
             return prediction;
         }
         else{
-            int today=y.size();
-            System.out.println("today:"+today);
-            int start=this.getStartX(startControlDate,today);
-            System.out.println("start:"+start);
             if(today<start){
                 //today处于①
                 if(start-today>=num){
@@ -83,7 +83,7 @@ public class Fitting {
                     List<Integer> x=new ArrayList<>();
                     for(int i=1;i<=y.size();i++)
                         x.add(i);
-                    ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num);
+                    ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num,today);
                     prediction=fit.getPrediction();
                 }
                 else{
@@ -122,6 +122,15 @@ public class Fitting {
                 for(int i=start+last;i<=today;i++){
                     x.add(i);
                 }
+                ExponentialCurveFitting fit=new ExponentialCurveFitting(x,y,num,today);
+                if(x.size()<3){
+                    //如果可用数据太少，则需要手动添加数据
+                    double tx=x.get(0);
+                    double ty=y.get(0);
+                    fit.addPoint(tx+1*15*((double)last)/30,ty/2);
+                    fit.addPoint(tx+2*15*((double)last)/30,ty/4);
+                }
+                prediction.addAll(fit.getPrediction());
             }
         }
         return prediction;

@@ -12,17 +12,19 @@ public class SigmoidCurveFitting implements CurveFitting{
     private int numOfResult;//预测结果的天数
     private WeightedObservedPoints points=new WeightedObservedPoints();
     private int beginOfPrediction=0;//预测结果的开始，即观察点的个数
-
-    public SigmoidCurveFitting(){
-
+    private int today;
+    public SigmoidCurveFitting(int today){
+        this.today=today;
     }
 
-    public SigmoidCurveFitting(int numOfResult){
+    public SigmoidCurveFitting(int numOfResult,int today){
         this.numOfResult=numOfResult;
+        this.today=today;
     }
 
-    public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
+    public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int numOfResult,int today){
         this.numOfResult=numOfResult;
+        this.today=today;
         //将x,y数列添加到观察点序列中
         //y=1/[e^(a+bx)]---->ln[(1/y)]=a+bx
         for(int i=0;i<Math.min(x.size(),y.size());i++){

@@ -11,23 +11,26 @@ public class PolynomialCurveFitting implements CurveFitting{
     private List<Integer> prediction=new ArrayList<>();//预测结果数组，用于输出
     private int numOfResult;//预测结果的天数
     private WeightedObservedPoints points=new WeightedObservedPoints();
-    private int beginOfPrediction=0;//预测结果的开始，即观察点的个数
+    private int numOfPoints =0;//预测结果的开始，即观察点的个数
+    private int today;
 
-    public PolynomialCurveFitting(){
-
+    public PolynomialCurveFitting(int today){
+        this.today=today;
     }
 
-    public PolynomialCurveFitting(int numOfResult){
+    public PolynomialCurveFitting(int numOfResult,int today){
         this.numOfResult=numOfResult;
+        this.today=today;
     }
 
-    public PolynomialCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
+    public PolynomialCurveFitting(List<Integer> x,List<Integer> y,int numOfResult,int today){
         this.numOfResult=numOfResult;
+        this.today=today;
         //将x,y数列添加到观察点序列中
         for(int i=0;i<Math.min(x.size(),y.size());i++){
             points.add((double)x.get(i),(double)y.get(i));
             System.out.println("添加到观察点序列中:("+(double)x.get(i)+","+(double)y.get(i)
-                    +"),当前共有观察点"+beginOfPrediction+"个");
+                    +"),当前共有观察点"+ numOfPoints +"个");
         }
     }
 
@@ -42,12 +45,11 @@ public class PolynomialCurveFitting implements CurveFitting{
     @Override
     public List<Integer> getPrediction(){
         this.run();
-        int date=beginOfPrediction;
         System.out.println("此阶段预测得到的结果个数为:"+numOfResult);
         for(int i=0;i<numOfResult;i++){
-            prediction.add(function(date));
-            System.out.println("预测结果:("+date+","+function(date)+")");
-            date++;
+            prediction.add(function(today+1));
+            System.out.println("预测结果:("+today+","+function(today)+")");
+            today++;
         }
         return prediction;
     }
@@ -73,7 +75,7 @@ public class PolynomialCurveFitting implements CurveFitting{
         for(int i=0;i<Math.min(x.size(),y.size());i++){
             points.add((double)x.get(i),(double)y.get(i));
             System.out.println("添加到观察点序列中:("+(double)x.get(i)+","+(double)y.get(i)
-                    +"),当前共有观察点"+beginOfPrediction+"个");
+                    +"),当前共有观察点"+ numOfPoints+"个");
         }
     }
 }
