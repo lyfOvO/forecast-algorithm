@@ -1,8 +1,10 @@
 package com.server.demo.controller;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -60,6 +62,14 @@ public class Fitting {
         System.out.println("today:"+today);
         int start=this.getStartX(startControlDate,today);
         System.out.println("start:"+start);
+        //先判断是否全部为0
+        List<Integer> end;
+        if(y.get(y.size()-1)==0){
+            for(int i=0;i<num;i++)
+                prediction.add(i);
+            System.out.println("确诊人数归零");
+            return prediction;
+        }
         if(!hasControl){
             //不进行控制的自然增长模型
             System.out.println("without control");
