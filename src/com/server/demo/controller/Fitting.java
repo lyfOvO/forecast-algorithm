@@ -24,7 +24,7 @@ public class Fitting {
         this.num=numOfResult;
     }
 
-    Fitting(boolean hasControl,String startControlDate,int raiseLastTime,int controlGrade,List<Integer> y,int numOfResult){
+    public Fitting(boolean hasControl, String startControlDate, int raiseLastTime, int controlGrade, List<Integer> y, int numOfResult){
         this.hasControl=hasControl;
         this.startControlDate=startControlDate;
         this.controlGrade=controlGrade;

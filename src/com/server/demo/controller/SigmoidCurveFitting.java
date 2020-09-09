@@ -12,6 +12,7 @@ public class SigmoidCurveFitting implements CurveFitting{
     private List<Integer> prediction=new ArrayList<>();//预测结果数组，用于输出
     private int numOfResult;//预测结果的天数
     private int beginOfPrediction=0;//预测结果的开始，即观察点的个数
+    private double[] coefficient=new double[3];
 
     public SigmoidCurveFitting(){
 
@@ -32,12 +33,20 @@ public class SigmoidCurveFitting implements CurveFitting{
         System.out.println("start python");
         Process proc;
         try {
-            proc = Runtime.getRuntime().exec("python ./SigmoidCurveFitting.py");// 执行py文件
+            String filePython="./src/com/server/demo/controller/SigmoidCUrveFitting.py ";
+            proc = Runtime.getRuntime().exec("python "+filePython+y);// 执行py文件并传递数组y
             //用输入输出流来截取结果
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
             while ((line = in.readLine()) != null) {
                 System.out.println(line);
+                //将读入结果分割为拟合的三个系数
+                String result[]=line.split(" ");
+                for(int i=0;i<3;i++)
+                    coefficient[i]=Double.parseDouble(result[i]);
+                System.out.println("a:"+coefficient[0]);
+                System.out.println("b:"+coefficient[1]);
+                System.out.println("c:"+coefficient[2]);
             }
             in.close();
             proc.waitFor();
@@ -51,14 +60,24 @@ public class SigmoidCurveFitting implements CurveFitting{
 
     @Override
     public List<Integer> getPrediction(int today) {
-
+        run();
+        for(int i=today+1;i<today+1+numOfResult;i++){
+            prediction.add(function(i));
+            System.out.println("预测结果:("+i+","+function(i)+")");
+        }
         return prediction;
     }
 
     @Override
     public int function(int x) {
-
-        return 0;
+        double y=0;
+        //y=c/(1+np.exp(a*x+b))
+        double a=coefficient[0];
+        double b=coefficient[1];
+        double c=coefficient[2];
+        y=c/(1+Math.pow(Math.E,a*(double)x+b));
+        //System.out.println(y);
+        return (int)y;
     }
 
     @Override
