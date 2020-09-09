@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Fitting {
-    boolean hasControl; //是否进行控制
+    int controlType; //是否进行控制
     String startControlDate; //控制开始的时间
     int last; //控制持续的时间
     int controlGrade; //控制等级
@@ -18,14 +18,14 @@ public class Fitting {
 
     }
 
-    Fitting(boolean hasControl,List<Integer> y,int numOfResult){
-        this.hasControl=hasControl;
+    Fitting(int controlType, List<Integer> y, int numOfResult){
+        this.controlType = controlType;
         this.y=y;
         this.num=numOfResult;
     }
 
-    public Fitting(boolean hasControl, String startControlDate, int raiseLastTime, int controlGrade, List<Integer> y, int numOfResult){
-        this.hasControl=hasControl;
+    public Fitting(int controlType, String startControlDate, int raiseLastTime, int controlGrade, List<Integer> y, int numOfResult){
+        this.controlType = controlType;
         this.startControlDate=startControlDate;
         this.controlGrade=controlGrade;
         switch(controlGrade){
@@ -68,7 +68,7 @@ public class Fitting {
             System.out.println("确诊人数归零");
             return prediction;
         }
-        if(!hasControl){
+        if(controlType==1){
             //不进行控制的自然增长模型
             System.out.println("without control");
             List<Integer> x=new ArrayList<>();
@@ -79,7 +79,7 @@ public class Fitting {
             prediction.addAll(fit.getPrediction(today));
             return prediction;
         }
-        else{
+        else if(controlType==2){
             if(today<start){
                 //today处于①
                 if(start-today>=num){
@@ -230,6 +230,9 @@ public class Fitting {
                 }
                 prediction.addAll(fit.getPrediction(today));
             }
+        }
+        else if(controlType==3){
+
         }
         return prediction;
     }
