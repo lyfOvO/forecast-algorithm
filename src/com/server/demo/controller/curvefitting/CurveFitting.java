@@ -1,4 +1,4 @@
-package com.server.demo.controller;
+package com.server.demo.controller.curvefitting;
 
 import java.util.List;
 

@@ -1,5 +1,5 @@
 package com.server.demo.demo;
-import com.server.demo.controller.*;
+import com.server.demo.controller.curvefitting.Fitting;
 
 import java.util.Arrays;
 import java.util.List;

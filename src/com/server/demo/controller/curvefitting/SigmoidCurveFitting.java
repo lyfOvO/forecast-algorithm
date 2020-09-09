@@ -1,4 +1,4 @@
-package com.server.demo.controller;
+package com.server.demo.controller.curvefitting;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class SigmoidCurveFitting implements CurveFitting{
         System.out.println("start python");
         Process proc;
         try {
-            String filePython="./src/com/server/demo/controller/SigmoidCUrveFitting.py ";
+            String filePython="./src/com/server/demo/controller/python/SigmoidCurveFitting.py ";
             proc = Runtime.getRuntime().exec("python "+filePython+y);// 执行py文件并传递数组y
             //用输入输出流来截取结果
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
