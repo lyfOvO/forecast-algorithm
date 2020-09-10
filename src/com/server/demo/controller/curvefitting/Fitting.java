@@ -70,7 +70,7 @@ public class Fitting {
             System.out.println("确诊人数归零");
             return prediction;
         }
-        if(controlType==2){
+        if(controlType==1){
             //不进行控制的自然增长模型
             System.out.println("without control");
             List<Integer> x=new ArrayList<>();
@@ -81,7 +81,7 @@ public class Fitting {
             prediction.addAll(fit.getPrediction());
             return prediction;
         }
-        else if(controlType==1){
+        else if(controlType==2){
             //进行控制的函数拟合模型
             if(today<start){
                 if(today+num<=start){
