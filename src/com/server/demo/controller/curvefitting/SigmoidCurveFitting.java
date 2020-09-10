@@ -32,7 +32,7 @@ public class SigmoidCurveFitting implements CurveFitting{
 
     @Override
     public void run(){
-        System.out.println("y:"+y);
+        //System.out.println("y:"+y);
         System.out.println("start python");
         Process proc;
         try {

@@ -27,27 +27,7 @@ if __name__=='__main__':
     #进行拟合
     xdata=np.array(list_x)
     ydata=np.array(list_y)
-    popt,pcov=curve_fit(sigmoid,xdata,ydata,bounds=([-np.inf,-np.inf,0.],[np.inf,np.inf,np.inf]))
+    popt,pcov=curve_fit(sigmoid,xdata,ydata,bounds=([-np.inf,0.,0.],[0,np.inf,np.inf]))
     #print('函数y=',popt[2],'/(1+e^(',popt[0],'*(x+',popt[1],')))')
     print(popt[0],popt[1],popt[2])
-
-
-#拟合y值
-#x=np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
-#yvals=sigmoid(x,*popt)
-#print('函数y=',c,'/(1+e^(',a,'*(x+',b,')))')
-#print('yvals:',yvals)
-
-#绘图
-#plot1=plt.plot(xdata,ydata,'s',label='origin values')
-#plot2=plt.plot(x,yvals,'r',label='polyfit values')
-#plt.xlabel('x')
-#plt.ylabel('y')
-#plt.legend(loc=4)
-#plt.title('curve_fit')
-#plt.show()
-
-
-
-
 

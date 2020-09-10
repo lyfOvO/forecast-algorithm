@@ -8,12 +8,12 @@ import java.util.List;
 
 public class Demo {
     public static void main(String[] args){
-        List<Integer> y=Arrays.asList(0,0,0,0,1,2,3,6,10,13,15,14,20,30,35,48,49,49);
-        List<Integer> x=Arrays.asList(1,2,3,4,5,6,7,8,9, 10,11,12,13,14,15,16,17,18);
+        List<Integer> y=Arrays.asList(43,1861,37904,93494,164653,209692,235369,256251,272064);
+        List<Integer> x=Arrays.asList(1,2,3,4,5,6,7,8,13, 14,15,16,17);
         //SEIR seir=new SEIR(10,0.2f,10, 0.1f,0.1f,0.2f,0.1f,10000,y);
         //seir.run();
         //System.out.println(seir.getPrediction());
-        SigmoidCurveFitting test=new SigmoidCurveFitting(x,y,19,20);
+        SigmoidCurveFitting test=new SigmoidCurveFitting(x,y,19,30);
         System.out.println(test.getPrediction());
     }
 
