@@ -79,19 +79,23 @@ public class Fitting {
 
     public List<Integer> fitting(){
         List<Integer> prediction=new ArrayList<>();
-        int today=y.size();
-        System.out.println("today:"+today);
-        int start=this.getStartX(startControlDate,today);
-        System.out.println("start:"+start);
-        //先判断是否全部为0
-        List<Integer> end;
-        if(y.get(y.size()-1)==0){
-            for(int i=0;i<today;i++)
-                prediction.add(this.y.get(i));
-            for(int i=0;i<num;i++)
-                prediction.add(0);
-            System.out.println("确诊人数归零");
-            return prediction;
+        int today=0;
+        int start=0;
+        if(controlType!=3) {
+            today = y.size();
+            System.out.println("today:" + today);
+            start = this.getStartX(startControlDate, today);
+            System.out.println("start:" + start);
+            //先判断是否全部为0
+            List<Integer> end;
+            if (y.get(y.size() - 1) == 0) {
+                for (int i = 0; i < today; i++)
+                    prediction.add(this.y.get(i));
+                for (int i = 0; i < num; i++)
+                    prediction.add(0);
+                System.out.println("确诊人数归零");
+                return prediction;
+            }
         }
         if(controlType==1){
             //不进行控制的自然增长模型
@@ -291,7 +295,7 @@ public class Fitting {
         else if(controlType==3){
             //用户输入变量控制的SEIR模型
             SEIR seir=new SEIR(r1,b1,r2,b2,a,v,d,n,y);
-            prediction.addAll(prediction);
+            prediction.addAll(seir.getPrediction());
         }
         return prediction;
     }
