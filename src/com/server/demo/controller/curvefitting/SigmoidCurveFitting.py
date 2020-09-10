@@ -27,7 +27,7 @@ if __name__=='__main__':
     #进行拟合
     xdata=np.array(list_x)
     ydata=np.array(list_y)
-    popt,pcov=curve_fit(sigmoid,xdata,ydata,bounds=([-1.,-1.,-np.inf],[10.,10.,np.inf]))
+    popt,pcov=curve_fit(sigmoid,xdata,ydata,bounds=([-np.inf,-np.inf,0.],[np.inf,np.inf,np.inf]))
     #print('函数y=',popt[2],'/(1+e^(',popt[0],'*(x+',popt[1],')))')
     print(popt[0],popt[1],popt[2])
 

@@ -121,6 +121,8 @@ public class Fitting {
                         y1.add(y.get(i-1));
                     }
                     ExponentialCurveFitting fit1=new ExponentialCurveFitting(x1,y1,1,today+num);
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
                     prediction.addAll(fit1.getPrediction());
                     System.out.println("--end--");
                 }
@@ -134,6 +136,8 @@ public class Fitting {
                         y1.add(y.get(i-1));
                     }
                     ExponentialCurveFitting fit1=new ExponentialCurveFitting(x1,y1,1,start);
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
                     prediction.addAll(fit1.getPrediction());
                     System.out.println("---②---");
                     PolynomialCurveFitting fit2=new PolynomialCurveFitting(start+1,today+num);
@@ -154,6 +158,10 @@ public class Fitting {
                         x1.add(i);
                         y1.add(y.get(i-1));
                     }
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
+                    ExponentialCurveFitting fit1=new ExponentialCurveFitting(x1,y1,today+1,start);
+                    prediction.addAll(fit1.getPrediction());
                     System.out.println("---②---");
                     PolynomialCurveFitting fit2=new PolynomialCurveFitting(start+1,start+last);
                     double tx=(double)start;
@@ -183,6 +191,8 @@ public class Fitting {
                     fit.addPoint(tx,ty);
                     fit.addPoint(tx+((double)last/2),ty*1.5);
                     fit.addPoint(tx+(double)last,ty);
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
                     prediction.addAll(fit.getPrediction());
                     System.out.println("--end--");
                 }
@@ -203,6 +213,8 @@ public class Fitting {
                     fit2.addPoint(tx,ty);
                     fit2.addPoint(tx+30,ty/2);
                     fit2.addPoint(tx+60,ty/4);
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
                     prediction.addAll(fit2.getPrediction());
                     System.out.println("--end--");
                 }
@@ -225,6 +237,8 @@ public class Fitting {
                         fit.addPoint(tx+((double)last/2),ty*1.5);
                         fit.addPoint(tx+(double)last,ty);
                     }
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
                     prediction.addAll(fit.getPrediction());
                     System.out.println("--end--");
                 }
@@ -245,6 +259,8 @@ public class Fitting {
                         fit1.addPoint(tx+((double)last/2),ty*1.5);
                         fit1.addPoint(tx+(double)last,ty);
                     }
+                    for(int i=1;i<=today;i++)
+                        prediction.add(y.get(i-1));
                     prediction.addAll(fit1.getPrediction());
                     System.out.println("---③---");
                     tx=(double)(start+last);
@@ -267,11 +283,15 @@ public class Fitting {
                 fit.addPoint(tx,ty);
                 fit.addPoint(tx+30,ty/2);
                 fit.addPoint(tx+60,ty/4);
+                for(int i=1;i<=today;i++)
+                prediction.add(y.get(i-1));
                 prediction.addAll(fit.getPrediction());
                 System.out.println("--end--");
             }
             else{
                 System.out.println("today>start+last");
+                for(int i=1;i<=today;i++)
+                    prediction.add(y.get(i-1));
                 System.out.println("---③---");
                 ExponentialCurveFitting fit=new ExponentialCurveFitting(today+1,today+num);
                 double tx=(double)today;

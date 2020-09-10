@@ -32,11 +32,12 @@ public class SigmoidCurveFitting implements CurveFitting{
 
     @Override
     public void run(){
+        System.out.println("y:"+y);
         System.out.println("start python");
         Process proc;
         try {
-            String filePython="./src/com/server/demo/controller/python/SigmoidCurveFitting.py ";
-            proc = Runtime.getRuntime().exec("python3 "+filePython+y);// 执行py文件并传递数组y
+            String filePython="./src/com/server/demo/controller/curvefitting/SigmoidCurveFitting.py ";
+            proc = Runtime.getRuntime().exec("python "+filePython+y);// 执行py文件并传递数组y
             //用输入输出流来截取结果
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
