@@ -9,7 +9,8 @@ import java.util.List;
 public class PolynomialCurveFitting implements CurveFitting{
     private double[] coefficient;//拟合结果，即多项式系数
     private List<Integer> prediction=new ArrayList<>();//预测结果数组，用于输出
-    private int numOfResult;//预测结果的天数
+    private int begin;
+    private int end;
     private WeightedObservedPoints points=new WeightedObservedPoints();
     private int numOfPoints =0;//预测结果的开始，即观察点的个数
 
@@ -17,12 +18,14 @@ public class PolynomialCurveFitting implements CurveFitting{
 
     }
 
-    public PolynomialCurveFitting(int numOfResult){
-        this.numOfResult=numOfResult;
+    public PolynomialCurveFitting(int begin,int end){
+        this.begin=begin;
+        this.end=end;
     }
 
-    public PolynomialCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
-        this.numOfResult=numOfResult;
+    public PolynomialCurveFitting(List<Integer> x,List<Integer> y,int begin,int end){
+        this.begin=begin;
+        this.end=end;
         //将x,y数列添加到观察点序列中
         for(int i=0;i<Math.min(x.size(),y.size());i++){
             points.add((double)x.get(i),(double)y.get(i));
@@ -41,13 +44,11 @@ public class PolynomialCurveFitting implements CurveFitting{
     }
 
     @Override
-    public List<Integer> getPrediction(int today){
+    public List<Integer> getPrediction(){
         this.run();
-        System.out.println("此阶段预测得到的结果个数为:"+numOfResult);
-        for(int i=0;i<numOfResult;i++){
-            today++;
-            prediction.add(function(today+1));
-            System.out.println("预测结果:("+today+","+function(today)+")");
+        for(int i=begin;i<end;i++){
+            prediction.add(function(i));
+            System.out.println("预测结果:("+i+","+function(i)+")");
         }
         return prediction;
     }

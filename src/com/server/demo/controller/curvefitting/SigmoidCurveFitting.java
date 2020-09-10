@@ -10,22 +10,24 @@ public class SigmoidCurveFitting implements CurveFitting{
     private List<Integer> x=new ArrayList();
     private List<Integer> y=new ArrayList();
     private List<Integer> prediction=new ArrayList<>();//预测结果数组，用于输出
-    private int numOfResult;//预测结果的天数
-    private int beginOfPrediction=0;//预测结果的开始，即观察点的个数
     private double[] coefficient=new double[3];
+    private int num;//预测结果的个数
+    private int today;
 
     public SigmoidCurveFitting(){
 
     }
 
-    public SigmoidCurveFitting(int numOfResult){
-        this.numOfResult=numOfResult;
+    public SigmoidCurveFitting(int today,int num){
+        this.today=today;
+        this.num=num;
     }
 
-    public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int numOfResult){
+    public SigmoidCurveFitting(List<Integer> x,List<Integer> y,int today,int num){
         this.x=x;
         this.y=y;
-        this.numOfResult=numOfResult;
+        this.today=today;
+        this.num=num;
     }
 
     @Override
@@ -59,9 +61,9 @@ public class SigmoidCurveFitting implements CurveFitting{
     }
 
     @Override
-    public List<Integer> getPrediction(int today) {
+    public List<Integer> getPrediction() {
         run();
-        for(int i=today+1;i<today+1+numOfResult;i++){
+        for(int i=1;i<today+num;i++){
             prediction.add(function(i));
             System.out.println("预测结果:("+i+","+function(i)+")");
         }
