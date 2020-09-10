@@ -58,6 +58,7 @@ public class Fitting {
         this.v=v;
         this.d=d;
         this.n=n;
+        this.y=y;
     }
 
     public int getStartX(String startControlDate,int today){
