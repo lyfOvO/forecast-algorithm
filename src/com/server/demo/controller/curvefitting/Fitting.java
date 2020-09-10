@@ -1,5 +1,7 @@
 package com.server.demo.controller.curvefitting;
 
+import com.server.demo.controller.seir.SEIR;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +15,15 @@ public class Fitting {
     int controlGrade; //控制等级
     int num; //所需的预测结果数量
     List<Integer> y; //用于预测的疫情数据
-
+    //SEIR模型所需参数
+    private int r1;//感染者每日接触人数
+    private int r2;//潜伏者每日接触人数
+    private float b1;//感染者传染概率
+    private float b2;//潜伏者传染概率
+    private float a;//潜伏者患病概率
+    private float v;//感染者康复概率
+    private float d;//感染者病死率
+    private int n;//该地区总人数
     Fitting(){
 
     }
@@ -36,6 +46,18 @@ public class Fitting {
         }
         this.y=y;
         this.num=numOfResult;
+    }
+
+    public Fitting(int controlType,int r1,float b1,int r2,float b2,float a,float v,float d,int n,List<Integer> y){
+        this.controlType=controlType;
+        this.r1=r1;
+        this.b1=b1;
+        this.r2=r2;
+        this.b2=b2;
+        this.a=a;
+        this.v=v;
+        this.d=d;
+        this.n=n;
     }
 
     public int getStartX(String startControlDate,int today){
@@ -267,7 +289,8 @@ public class Fitting {
         }
         else if(controlType==3){
             //用户输入变量控制的SEIR模型
-
+            SEIR seir=new SEIR(r1,b1,r2,b2,a,v,d,n,y);
+            prediction.addAll(prediction);
         }
         return prediction;
     }

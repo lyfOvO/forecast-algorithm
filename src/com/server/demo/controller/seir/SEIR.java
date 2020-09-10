@@ -25,12 +25,13 @@ public class SEIR {
 
     }
 
-    public SEIR(int r1,float b1,int r2,float b2,float a,float d,int N,List<Integer> y){
-        this.r1=r1;
+    public SEIR(int r1,float b1,int r2,float b2,float a,float v,float d,int N,List<Integer> y){
+        this.r1=(float)r1;
         this.b1=b1;
-        this.r2=r2;
+        this.r2=(float)r2;
         this.b2=b2;
         this.a=a;
+        this.v=v;
         this.d=d;
         this.N[0]=(float)N;
         this.y=y;
